@@ -34,21 +34,24 @@ func main() {
       break
     }
 
-    for i:=0; i<len(readBuffer); i++ {
-      if readBuffer[i] == 0 {
+    readBufferPosition := 0
+    for readBufferPosition < len(readBuffer) {
+      if readBuffer[readBufferPosition] == 0 {
         break
       }
 
-      bufferByte := readBuffer[i]
+      bufferByte := readBuffer[readBufferPosition]
+      readBufferPosition++
 
       if bufferByte == byte('|') {
-        count   := int(readBuffer[i+1])
-        //fmt.Printf("%v\n", count)
+        count   := int(readBuffer[readBufferPosition])
+        readBufferPosition++
         for j:=0; j<count; j++ {
-          fmt.Printf("%v", string(readBuffer[i+2]))
+          fmt.Printf("%v", string(readBuffer[readBufferPosition]))
         }
+        readBufferPosition++
       } else {
-        fmt.Printf("%v", string(readBuffer[i]))
+        fmt.Printf("%v", string(bufferByte))
       }
     }
 

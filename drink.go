@@ -7,17 +7,13 @@ import (
   "bufio"
   "io"
   "strings"
-  "io/ioutil"
   "path/filepath"
 )
 
 func write(writeBuffer []byte, thing byte, counter int) []byte {
-  fmt.Printf("Writing %v: %v\n", counter, string(thing))
   if counter == 1 {
-    fmt.Printf("Writing one\n")
     writeBuffer = append(writeBuffer, thing)
   } else {
-    fmt.Printf("Writing many\n")
     writeBuffer = append(writeBuffer, byte('|'))
     writeBuffer = append(writeBuffer, byte(counter))
     writeBuffer = append(writeBuffer, thing)
@@ -69,7 +65,6 @@ func main() {
         break;
       }
 
-      fmt.Printf("Read %v\n", bufferByte)
 
       if idx == 0 {
         lastByte = bufferByte
@@ -90,7 +85,6 @@ func main() {
 
   outFile.Write(writeBuffer)
 
-  dat, _ := ioutil.ReadFile("sample.alice")
-  fmt.Print(dat)
-
+  outFileSize, _ := outFile.Stat()
+  fmt.Printf("Compresszed file size is: %v\n", outFileSize.Size())
 }
