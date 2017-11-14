@@ -1,3 +1,4 @@
-eat
-drink
+bin/
+*.alice
+.idea
 .DS_Store

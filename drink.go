@@ -14,7 +14,7 @@ func write(writeBuffer []byte, thing byte, counter int) []byte {
   if counter == 1 {
     writeBuffer = append(writeBuffer, thing)
   } else {
-    writeBuffer = append(writeBuffer, byte('|'))
+    writeBuffer = append(writeBuffer, byte(0xfe))
     writeBuffer = append(writeBuffer, byte(counter))
     writeBuffer = append(writeBuffer, thing)
   }
@@ -50,8 +50,7 @@ func main() {
 
   writeBuffer := make([]byte, 0)
 
-
-  _,err = reader.Read(readBuffer)
+  bytesRead, err := reader.Read(readBuffer)
   for {
     if (err != nil && err == io.EOF) {
       break
@@ -59,13 +58,8 @@ func main() {
 
     var lastByte byte;
     counter := 1
-    for idx, bufferByte := range readBuffer {
-      if bufferByte == 0 {
-        writeBuffer = write(writeBuffer, lastByte, counter)
-        break;
-      }
-
-
+    data := readBuffer[:bytesRead]
+    for idx, bufferByte := range data {
       if idx == 0 {
         lastByte = bufferByte
       } else {  
@@ -79,6 +73,8 @@ func main() {
       }
 
     }
+
+    writeBuffer = write(writeBuffer, lastByte, counter)
 
     _,err = reader.Read(readBuffer)
   }
