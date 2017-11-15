@@ -76,7 +76,7 @@ func main() {
 
     writeBuffer = write(writeBuffer, lastByte, counter)
 
-    _,err = reader.Read(readBuffer)
+    bytesRead,err = reader.Read(readBuffer)
   }
 
   outFile.Write(writeBuffer)

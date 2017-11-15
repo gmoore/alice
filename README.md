@@ -17,7 +17,7 @@ make
 
 ```
 ./bin/drink --file littlegidding.txt
-./bin/eat --file littlegidding.alice
+./bin/eat --file littlegidding.alice --out littlegidding-decompressed.txt
 ```
 
 Note that most plain text files get compressed to a larger size than their uncompressed counterparts.
