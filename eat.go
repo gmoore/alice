@@ -40,6 +40,7 @@ func main() {
   writeBuffer  := make([]byte, 0)
 
   bytesRead, err := reader.Read(readBuffer)
+  var lastByte byte
   for {
     if (err != nil && err == io.EOF) {
       break
@@ -52,18 +53,18 @@ func main() {
       bufferByte := data[readBufferPosition]
       readBufferPosition++
 
-      if bufferByte == byte(0xfe) {
+      if bufferByte == lastByte {
         count   := int(data[readBufferPosition])
         readBufferPosition++
-        for j:=0; j<count; j++ {
-          //fmt.Printf("%v", string(readBuffer[readBufferPosition]))
-          writeBuffer = append(writeBuffer, data[readBufferPosition])
+
+        for j:=1; j<count; j++ {
+          writeBuffer = append(writeBuffer, bufferByte)
         }
-        readBufferPosition++
       } else {
-        //fmt.Printf("%v", string(bufferByte))
         writeBuffer = append(writeBuffer, bufferByte)
       }
+
+      lastByte = bufferByte
     }
 
     bytesRead, err = reader.Read(readBuffer)

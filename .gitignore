@@ -2,3 +2,5 @@ bin/
 *.alice
 .idea
 .DS_Store
+*.jpg
+*.jpeg

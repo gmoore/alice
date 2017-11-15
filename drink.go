@@ -14,9 +14,9 @@ func write(writeBuffer []byte, thing byte, counter int) []byte {
   if counter == 1 {
     writeBuffer = append(writeBuffer, thing)
   } else {
-    writeBuffer = append(writeBuffer, byte(0xfe))
-    writeBuffer = append(writeBuffer, byte(counter))
     writeBuffer = append(writeBuffer, thing)
+    writeBuffer = append(writeBuffer, thing)
+    writeBuffer = append(writeBuffer, byte(counter))
   }
 
   return writeBuffer
