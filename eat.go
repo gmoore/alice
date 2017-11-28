@@ -6,9 +6,31 @@ import (
   "flag"
   "bufio"
   "io"
-  // "strings"
-  // "path/filepath"
+  "encoding/binary"
 )
+
+func readHeader(reader io.Reader) {
+
+  aliceHeader := make([]byte, 5)
+  var aliceVersion uint8
+
+  err := binary.Read(reader, binary.LittleEndian, &aliceHeader)
+  err  = binary.Read(reader, binary.LittleEndian, &aliceVersion)
+
+  if (err != nil) {
+    fmt.Printf("This does not appear to be a file encoded by Alice\n")
+    os.Exit(1)
+  }
+
+  aliceHeaderText := string(aliceHeader)
+
+  if aliceHeaderText == "ALICE" && aliceVersion == 1 {
+    fmt.Printf("This is an Alice file encoded by Alice version %v\n", int(aliceVersion))
+  } else {
+    fmt.Println("This does not appear to be a file encoded by Alice")
+    os.Exit(1)
+  }
+}
 
 func main() {
   fileFlagValue  := flag.String("file", "", "The file to expand.")
@@ -39,7 +61,10 @@ func main() {
   readBuffer  := make([]byte, 10000)
   writeBuffer  := make([]byte, 0)
 
+  readHeader(reader)
+
   bytesRead, err := reader.Read(readBuffer)
+
   var lastByte byte
   for {
     if (err != nil && err == io.EOF) {
@@ -85,7 +110,8 @@ func main() {
     outFileSize, _ := outFile.Stat()
     fmt.Printf("Uncompresszed file size is: %v\n", outFileSize.Size())
   } else {
-    fmt.Print("\n")
+    fmt.Println(len(writeBuffer))
+    fmt.Printf("%v\n", string(writeBuffer))
   }
 
 }

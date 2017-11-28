@@ -10,6 +10,16 @@ import (
   "path/filepath"
 )
 
+func writeHeader(writeBuffer []byte) []byte {
+  //Our name
+  writeBuffer = append(writeBuffer, []byte("ALICE")...)
+
+  //The version. We're hosed if we go past 255
+  writeBuffer = append(writeBuffer, byte(1))
+
+  return writeBuffer
+}
+
 func write(writeBuffer []byte, thing byte, counter int) []byte {
   if counter == 1 {
     writeBuffer = append(writeBuffer, thing)
@@ -49,6 +59,8 @@ func main() {
   readBuffer  := make([]byte, 10000)
 
   writeBuffer := make([]byte, 0)
+
+  writeBuffer = writeHeader(writeBuffer)
 
   bytesRead, err := reader.Read(readBuffer)
   for {
